@@ -1,36 +1,23 @@
 #!/usr/bin/env python
 # coding: utf-8
-
-# In[19]:
-
-
 import geopandas as gpd
 import pandas as pd
 import os 
 import glob
 import requests
 import zipfile
-dest_doc = ".." + os.sep + "docs"
+dest_doc = "docs"
 donwload_url = "https://catastotn.tndigit.it/export_semestrale_VL_PUBB/IDR0020230701_TIPOCATSH_CCXXX.zip"
 url_csv = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPeLuWTTF1JhWOhhR_ZJmSLBJhMqcJ771xWUeNnuX2co7aV2k2UytMRWU3AZdgfP4gIsWZZHsmx3T7/pub?output=csv"
 
-
-# In[4]:
-
-
 df = pd.read_csv(url_csv)
 codici_catastali = df.codice_comune_catastale.unique()
-
-
-# In[5]:
-
 
 gdflist = []
 for codice in codici_catastali:
     codice = str(codice).zfill(3)
     url = donwload_url.replace("XXX",codice)
     response = requests.get(url)
-    # Elenca i nomi dei file che vuoi estrarre
     files_to_extract = []
     suffix = "_vl_uniqueparcel_poly"
     suffix = "_vl_parcel_poly"
@@ -52,10 +39,6 @@ for codice in codici_catastali:
         for shp in files_to_extract:
             os.remove(shp)
 parcels = gpd.GeoDataFrame(pd.concat(gdflist, ignore_index=True), crs=crs)
-
-
-# In[6]:
-
 
 parcels['catasto'] = ""
 parcels['comune'] = "NO"
@@ -89,29 +72,15 @@ for idx, row in df.iterrows():
         notfound.append(nf)
         
 
-
-# In[7]:
-
-
 parcels.fillna("non disponibile", inplace=True)
-
-
-# In[8]:
 
 
 usi_civici = parcels[parcels.comune != "NO"]
 usi_civici=usi_civici.to_crs(epsg=4326)
 usi_civici.to_file(dest_doc + os.sep + "usi_civici.geojson")
 
-
-# In[10]:
-
-
 usi_civici_edifici = usi_civici[usi_civici['PT_CODE'].str.startswith('.')]
 usi_civici_terreni = usi_civici[~usi_civici['PT_CODE'].str.startswith('.')]
-
-
-# In[22]:
 
 
 pd.DataFrame(notfound).to_excel(dest_doc + os.sep + "particelle_non_trovate.xlsx")
