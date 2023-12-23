@@ -11,8 +11,14 @@ donwload_url = "https://catastotn.tndigit.it/export_semestrale_VL_PUBB/IDR002023
 url_csv = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPeLuWTTF1JhWOhhR_ZJmSLBJhMqcJ771xWUeNnuX2co7aV2k2UytMRWU3AZdgfP4gIsWZZHsmx3T7/pub?output=csv"
 src_comunicatastaliamministrativi = "comuni_catastali_amministrativi_trentino.csv"
 comunicatastaliamministrativi = pd.read_csv(src_comunicatastaliamministrativi)
+
 def getComuneAmministrativo(name):
-    return comunicatastaliamministrativi[comunicatastaliamministrativi['ComuneCatastale'].str.upper() == name.upper()]["Comune Amministartivo"].values[0]
+    amministrativo = ""
+    rname = comunicatastaliamministrativi[comunicatastaliamministrativi['ComuneCatastale'].str.upper() == name.upper()]["Comune Amministartivo"]
+    if len(rname) >0:
+        amministrativo = rname.values[0]
+    return (amministrativo)
+
 df = pd.read_csv(url_csv)
 codici_catastali = df.codice_comune_catastale.unique()
 
