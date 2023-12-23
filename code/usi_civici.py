@@ -9,7 +9,10 @@ import zipfile
 dest_doc = "docs"
 donwload_url = "https://catastotn.tndigit.it/export_semestrale_VL_PUBB/IDR0020230701_TIPOCATSH_CCXXX.zip"
 url_csv = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPeLuWTTF1JhWOhhR_ZJmSLBJhMqcJ771xWUeNnuX2co7aV2k2UytMRWU3AZdgfP4gIsWZZHsmx3T7/pub?output=csv"
-
+src_comunicatastaliamministrativi = "comuni_catastali_amministrativi_trentino.csv"
+comunicatastaliamministrativi = pd.read_csv(src_comunicatastaliamministrativi)
+def getComuneAmministrativo(name):
+    return comunicatastaliamministrativi[comunicatastaliamministrativi['ComuneCatastale'].str.upper() == name.upper()]["Comune Amministartivo"].values[0]
 df = pd.read_csv(url_csv)
 codici_catastali = df.codice_comune_catastale.unique()
 
@@ -55,7 +58,8 @@ for idx, row in df.iterrows():
     codice_particella = row['codice_particella']  
     p = parcels[(parcels.PT_CODE == codice_particella) & (parcels.PT_CCAT == codice_comune_catastale)]  
     if p.shape[0] >0:
-        parcels.at[p.index[0],"comune"] = row['comune_ammistrativo']
+        parcels.at[p.index[0],"ufficio"] = row['comune_ammistrativo']
+        parcels.at[p.index[0],"comune"] = getComuneAmministrativo(row['nome_comune_catastale'])
         parcels.at[p.index[0],"catasto"] = row['nome_comune_catastale']
         parcels.at[p.index[0],"prg1"] = row['destinazione_uso_1']
         parcels.at[p.index[0],"prg2"] = row['destinazione_uso_1']
