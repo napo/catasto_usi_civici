@@ -8,7 +8,8 @@ on:
 env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
-permissions: write-all
+permissions:
+  contents: write
 
 jobs:
   create_geojson:
