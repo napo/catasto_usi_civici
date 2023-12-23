@@ -21,7 +21,7 @@ jobs:
           python-version: '3.10'
       - name: Install requirements
         run: pip install -r requirements.txt
-      - name: run counter
+      - name: data creation
         run: python code/usi_civici.py
       - name: Commit and push if it changed
         run: |-
