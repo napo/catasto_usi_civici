@@ -15,8 +15,9 @@ jobs:
   create_geojson:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       pull-requests: write
+      actions: write
       
     steps:
       - name: Checkout repo
