@@ -13,10 +13,14 @@ src_comunicatastaliamministrativi = "comuni_catastali_amministrativi_trentino.cs
 comunicatastaliamministrativi = pd.read_csv(src_comunicatastaliamministrativi)
 
 def getComuneAmministrativo(name):
+    if name == "FOLAS":
+        name = 'FOLAS-REVIAN'
     amministrativo = ""
     rname = comunicatastaliamministrativi[comunicatastaliamministrativi['ComuneCatastale'].str.upper() == name.upper()]["Comune Amministartivo"]
     if len(rname) >0:
         amministrativo = rname.values[0]
+    else: 
+        print(name)
     return (amministrativo)
 
 df = pd.read_csv(url_csv)
