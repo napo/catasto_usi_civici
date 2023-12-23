@@ -8,6 +8,8 @@ on:
 env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
+permissions: write-all
+
 jobs:
   create_geojson:
     runs-on: ubuntu-latest
