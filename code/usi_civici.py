@@ -138,6 +138,6 @@ usi_civici_terreni = usi_civici[~usi_civici['PT_CODE'].str.startswith('.')]
 
 
 pd.DataFrame(notfound).to_excel(dest_doc + os.sep + "particelle_non_trovate.xlsx")
-usi_civici_terreni.to_file(dest_doc + os.sep +"usi_civici_edifici.geojson")
-usi_civici_edifici.to_file(dest_doc + os.sep +"usi_civici_terreni.geojson")
+usi_civici_terreni.to_file(dest_doc + os.sep +"usi_civici_terreni.geojson"_
+usi_civici_edifici.to_file(dest_doc + os.sep +"usi_civici_edifici.geojson")
 
