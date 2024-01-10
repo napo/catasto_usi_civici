@@ -75,7 +75,7 @@ for codice in codici_catastali:
 parcels = gpd.GeoDataFrame(pd.concat(gdflist, ignore_index=True), crs=crs)
 
 
-# In[ ]:
+# In[52]:
 
 
 parcels['catasto'] = ""
@@ -113,13 +113,13 @@ for idx, row in df.iterrows():
         
 
 
-# In[ ]:
+# In[53]:
 
 
 parcels.fillna("non disponibile", inplace=True)
 
 
-# In[ ]:
+# In[54]:
 
 
 usi_civici = parcels[parcels.comune != "NO"]
@@ -127,17 +127,17 @@ usi_civici=usi_civici.to_crs(epsg=4326)
 usi_civici.to_file(dest_doc + os.sep + "usi_civici.geojson")
 
 
-# In[ ]:
+# In[55]:
 
 
 usi_civici_edifici = usi_civici[usi_civici['PT_CODE'].str.startswith('.')]
 usi_civici_terreni = usi_civici[~usi_civici['PT_CODE'].str.startswith('.')]
 
 
-# In[ ]:
+# In[56]:
 
 
 pd.DataFrame(notfound).to_excel(dest_doc + os.sep + "particelle_non_trovate.xlsx")
-usi_civici_terreni.to_file(dest_doc + os.sep +"usi_civici_terreni.geojson"_
+usi_civici_terreni.to_file(dest_doc + os.sep +"usi_civici_terreni.geojson")
 usi_civici_edifici.to_file(dest_doc + os.sep +"usi_civici_edifici.geojson")
 
