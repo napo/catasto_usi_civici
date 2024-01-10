@@ -1,20 +1,32 @@
 #!/usr/bin/env python
 # coding: utf-8
+
+# In[47]:
+
+
+# https://catastotn.tndigit.it/scarico-catasto-geometrico/it/index.html
 import geopandas as gpd
 import pandas as pd
 import os 
 import glob
 import requests
 import zipfile
-dest_doc = "docs"
+dest_doc = ".." + os.sep + "docs"
 donwload_url = "https://catastotn.tndigit.it/export_semestrale_VL_PUBB/IDR0020230701_TIPOCATSH_CCXXX.zip"
+donwload_url = "https://catastotn.tndigit.it/export_semestrale_VL_PUBB/IDR0020240101_TIPOCATSH_CCXXX.zip"
 url_csv = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPeLuWTTF1JhWOhhR_ZJmSLBJhMqcJ771xWUeNnuX2co7aV2k2UytMRWU3AZdgfP4gIsWZZHsmx3T7/pub?output=csv"
-src_comunicatastaliamministrativi = "code" + os.sep + "comuni_catastali_amministrativi_trentino.csv"
+src_comunicatastaliamministrativi = "comuni_catastali_amministrativi_trentino.csv"
 comunicatastaliamministrativi = pd.read_csv(src_comunicatastaliamministrativi)
+
+
+# In[49]:
+
 
 def getComuneAmministrativo(name):
     if name == "FOLAS":
         name = 'FOLAS-REVIAN'
+    if name =="BORGHETTO A/A":
+        name = "BORGHETTO"
     amministrativo = ""
     rname = comunicatastaliamministrativi[comunicatastaliamministrativi['ComuneCatastale'].str.upper() == name.upper()]["Comune Amministartivo"]
     if len(rname) >0:
@@ -23,14 +35,23 @@ def getComuneAmministrativo(name):
         print(name)
     return (amministrativo)
 
+
+# In[50]:
+
+
 df = pd.read_csv(url_csv)
 codici_catastali = df.codice_comune_catastale.unique()
+
+
+# In[51]:
+
 
 gdflist = []
 for codice in codici_catastali:
     codice = str(codice).zfill(3)
     url = donwload_url.replace("XXX",codice)
     response = requests.get(url)
+    # Elenca i nomi dei file che vuoi estrarre
     files_to_extract = []
     suffix = "_vl_uniqueparcel_poly"
     suffix = "_vl_parcel_poly"
@@ -53,8 +74,13 @@ for codice in codici_catastali:
             os.remove(shp)
 parcels = gpd.GeoDataFrame(pd.concat(gdflist, ignore_index=True), crs=crs)
 
+
+# In[ ]:
+
+
 parcels['catasto'] = ""
 parcels['comune'] = "NO"
+parcels['ufficio'] = ""
 parcels['prg1'] = ""
 parcels['prg2'] = ""
 parcels['prg3'] = ""
@@ -86,18 +112,32 @@ for idx, row in df.iterrows():
         notfound.append(nf)
         
 
+
+# In[ ]:
+
+
 parcels.fillna("non disponibile", inplace=True)
+
+
+# In[ ]:
 
 
 usi_civici = parcels[parcels.comune != "NO"]
 usi_civici=usi_civici.to_crs(epsg=4326)
 usi_civici.to_file(dest_doc + os.sep + "usi_civici.geojson")
 
+
+# In[ ]:
+
+
 usi_civici_edifici = usi_civici[usi_civici['PT_CODE'].str.startswith('.')]
 usi_civici_terreni = usi_civici[~usi_civici['PT_CODE'].str.startswith('.')]
 
 
+# In[ ]:
+
+
 pd.DataFrame(notfound).to_excel(dest_doc + os.sep + "particelle_non_trovate.xlsx")
-usi_civici_terreni.to_file(dest_doc + os.sep +"usi_civici_terreni.geojson")
-usi_civici_edifici.to_file(dest_doc + os.sep +"usi_civici_edifici.geojson")
+usi_civici_terreni.to_file(dest_doc + os.sep +"usi_civici_edifici.geojson")
+usi_civici_edifici.to_file(dest_doc + os.sep +"usi_civici_terreni.geojson")
 
