@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
-
-# In[47]:
-
-
 # https://catastotn.tndigit.it/scarico-catasto-geometrico/it/index.html
 import geopandas as gpd
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 import pandas as pd
 import os 
 import glob
@@ -19,10 +17,6 @@ url_csv = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPeLuWTTF1JhWOhhR_ZJ
 src_comunicatastaliamministrativi = "comuni_catastali_amministrativi_trentino.csv"
 src_comunicatastaliamministrativi = "code" + os.sep + "comuni_catastali_amministrativi_trentino.csv"
 comunicatastaliamministrativi = pd.read_csv(src_comunicatastaliamministrativi)
-
-
-# In[49]:
-
 
 def getComuneAmministrativo(name):
     if name == "FOLAS":
@@ -38,14 +32,8 @@ def getComuneAmministrativo(name):
     return (amministrativo)
 
 
-# In[50]:
-
-
 df = pd.read_csv(url_csv)
 codici_catastali = df.codice_comune_catastale.unique()
-
-
-# In[51]:
 
 
 gdflist = []
@@ -75,9 +63,6 @@ for codice in codici_catastali:
         for shp in files_to_extract:
             os.remove(shp)
 parcels = gpd.GeoDataFrame(pd.concat(gdflist, ignore_index=True), crs=crs)
-
-
-# In[52]:
 
 
 parcels['catasto'] = ""
@@ -112,31 +97,14 @@ for idx, row in df.iterrows():
         nf['codice_particella'] = codice_particella
         nf['codice_comune_catastale'] = codice_comune_catastale
         notfound.append(nf)
-        
-
-
-# In[53]:
-
 
 parcels.fillna("non disponibile", inplace=True)
-
-
-# In[54]:
-
 
 usi_civici = parcels[parcels.comune != "NO"]
 usi_civici=usi_civici.to_crs(epsg=4326)
 usi_civici.to_file(dest_doc + os.sep + "usi_civici.geojson")
-
-
-# In[55]:
-
-
 usi_civici_edifici = usi_civici[usi_civici['PT_CODE'].str.startswith('.')]
 usi_civici_terreni = usi_civici[~usi_civici['PT_CODE'].str.startswith('.')]
-
-
-# In[56]:
 
 
 pd.DataFrame(notfound).to_excel(dest_doc + os.sep + "particelle_non_trovate.xlsx")
