@@ -11,7 +11,7 @@ import os
 import glob
 import requests
 import zipfile
-dest_doc = ".." + os.sep + "docs"
+# dest_doc = ".." + os.sep + "docs"
 dest_doc = "docs"
 donwload_url = "https://catastotn.tndigit.it/export_semestrale_VL_PUBB/IDR0020230701_TIPOCATSH_CCXXX.zip"
 donwload_url = "https://catastotn.tndigit.it/export_semestrale_VL_PUBB/IDR0020240101_TIPOCATSH_CCXXX.zip"
