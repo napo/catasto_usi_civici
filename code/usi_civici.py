@@ -85,11 +85,11 @@ for idx, row in df.iterrows():
         parcels.at[p.index[0],"comune"] = getComuneAmministrativo(row['nome_comune_catastale'])
         parcels.at[p.index[0],"catasto"] = row['nome_comune_catastale']
         parcels.at[p.index[0],"prg1"] = row['destinazione_uso_1']
-        parcels.at[p.index[0],"prg2"] = row['destinazione_uso_1']
+        parcels.at[p.index[0],"prg2"] = row['destinazione_uso_2']
         parcels.at[p.index[0],"prg3"] = row['commento']
-        parcels.at[p.index[0],"prg4"] = row['destinazione_uso_1']
-        parcels.at[p.index[0],"prg5"] = row['destinazione_uso_1']
-        parcels.at[p.index[0],"prg6"] = row['destinazione_uso_1']
+        #parcels.at[p.index[0],"prg4"] = row['destinazione_uso_1']
+        #parcels.at[p.index[0],"prg5"] = row['destinazione_uso_1']
+        #parcels.at[p.index[0],"prg6"] = row['destinazione_uso_1']
         parcels.at[p.index[0],"aggiornamento"] = row['data_ultimo_aggiornamento_dati']
         parcels.at[p.index[0],"ettari"] = round(p.geometry.area[p.index[0]]/1000,2)
     else:
