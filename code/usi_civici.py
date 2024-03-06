@@ -38,7 +38,7 @@ codici_catastali = df.codice_comune_catastale.unique()
 
 gdflist = []
 for codice in codici_catastali:
-    codice = str(codice).zfill(3)
+    codice = str(codice).zfill(3).replace(".0","")
     url = donwload_url.replace("XXX",codice)
     response = requests.get(url)
     # Elenca i nomi dei file che vuoi estrarre
