@@ -84,7 +84,7 @@ for idx, row in df.iterrows():
     if p.shape[0] >0:
         parcels.at[p.index[0],"ufficio"] = row['comune_ammistrativo']
         parcels.at[p.index[0],"comune"] = getComuneAmministrativo(row['nome_comune_catastale'])
-        parcels.at[p.index[0],"catasto"] = row['nome_comune_catastale']
+        parcels.at[p.index[0],"catasto"] = row['nome_comune_catastale'].title()
         parcels.at[p.index[0],"uso1"] = row['destinazione_uso_1']
         parcels.at[p.index[0],"uso2"] = row['destinazione_uso_2']
         parcels.at[p.index[0],"commento"] = row['commento']
