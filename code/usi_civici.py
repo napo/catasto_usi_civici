@@ -67,15 +67,15 @@ for codice in codici_catastali:
 parcels = gpd.GeoDataFrame(pd.concat(gdflist, ignore_index=True), crs=crs)
 
 
-parcels['catasto'] = "non disponibile"
+parcels['catasto'] = ""
 parcels['comune'] = "NO"
-parcels['ufficio'] = "non disponibile"
-parcels['uso1'] = "non disponibile"
-parcels['uso2'] = "non disponibile"
-parcels['partita_tavolare'] = "non disponibile"
-parcels['aggiornamento'] = "non disponibile"
-parcels["ettari"] = "non disponibile"
-parcels["commento"] = "non disponibile"
+parcels['ufficio'] = ""
+parcels['uso1'] = ""
+parcels['uso2'] = ""
+parcels['partita_tavolare'] = ""
+parcels['aggiornamento'] = ""
+parcels["ettari"] = ""
+parcels["commento"] = ""
 notfound = []
 for idx, row in df.iterrows():
     codice_comune_catastale= row['codice_comune_catastale']
@@ -89,7 +89,7 @@ for idx, row in df.iterrows():
         parcels.at[p.index[0],"uso2"] = row['destinazione_uso_2']
         parcels.at[p.index[0],"commento"] = row['commento']
         parcels.at[p.index[0],"gestione"] = row['gestione attuale']
-        parcels.at[p.index[0],"'partita_tavolare"] = row['partita_tavolare']
+        parcels.at[p.index[0],"partita_tavolare"] = row['partita_tavolare']
         parcels.at[p.index[0],"aggiornamento"] = row['data_ultimo_aggiornamento_dati']
         parcels.at[p.index[0],"ettari"] = round(p.geometry.area[p.index[0]]/1000,2)
     else:
