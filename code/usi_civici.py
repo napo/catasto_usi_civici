@@ -11,9 +11,6 @@ import requests
 import zipfile
 # dest_doc = ".." + os.sep + "docs"
 dest_doc = "docs"
-donwload_url = "https://catastotn.tndigit.it/export_semestrale_VL_PUBB/IDR0020230701_TIPOCATSH_CCXXX.zip"
-donwload_url = "https://catastotn.tndigit.it/export_semestrale_VL_PUBB/IDR0020240101_TIPOCATSH_CCXXX.zip"
-donwload_url = "https://catastotn.tndigit.it/export_semestrale_VL_PUBB/IDR0020240701_TIPOCATSH_CCXXX.zip"
 download_url = "https://catastotn.tndigit.it/export_semestrale_VL_PUBB/IDR0020250101_TIPOCATSH_CCXXX.zip"
 url_csv = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPeLuWTTF1JhWOhhR_ZJmSLBJhMqcJ771xWUeNnuX2co7aV2k2UytMRWU3AZdgfP4gIsWZZHsmx3T7/pub?output=csv"
 src_comunicatastaliamministrativi = "comuni_catastali_amministrativi_trentino.csv"
@@ -43,7 +40,7 @@ codici_catastali = df.codice_comune_catastale.unique()
 gdflist = []
 for codice in codici_catastali:
     codice = str(codice).zfill(3).replace(".0","")
-    url = donwload_url.replace("XXX",codice)
+    url = download_url.replace("XXX",codice)
     response = requests.get(url)
     # Elenca i nomi dei file che vuoi estrarre
     files_to_extract = []
