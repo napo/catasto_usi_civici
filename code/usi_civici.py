@@ -28,8 +28,8 @@ def getComuneAmministrativo(name):
     rname = comunicatastaliamministrativi[comunicatastaliamministrativi['ComuneCatastale'].str.upper() == name.upper()]["Comune Amministartivo"]
     if len(rname) >0:
         amministrativo = rname.values[0]
-    else: 
-        print(name)
+    #else: 
+    #    print(name)
     return (amministrativo)
 
 
@@ -101,6 +101,7 @@ parcels.fillna("non disponibile", inplace=True)
 
 usi_civici = parcels[parcels.comune != "NO"]
 usi_civici=usi_civici.to_crs(epsg=4326)
+usi_civici = usi_civici.copy()
 usi_civici.to_file(dest_doc + os.sep + "usi_civici.geojson")
 usi_civici_edifici = usi_civici[usi_civici['PT_CODE'].str.startswith('.')]
 usi_civici_terreni = usi_civici[~usi_civici['PT_CODE'].str.startswith('.')]
