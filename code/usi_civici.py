@@ -11,7 +11,8 @@ import requests
 import zipfile
 # dest_doc = ".." + os.sep + "docs"
 dest_doc = "docs"
-download_url = "https://catastotn.tndigit.it/export_semestrale_VL_PUBB/IDR0020250701_TIPOCATSH_CCXXX.zip"
+datepublished = "20251231"
+download_url = "https://catastotn.tndigit.it/export_semestrale_VL_PUBB/IDR00" + datepublished + "_TIPOCATSH_CCXXX.zip"
 url_csv = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPeLuWTTF1JhWOhhR_ZJmSLBJhMqcJ771xWUeNnuX2co7aV2k2UytMRWU3AZdgfP4gIsWZZHsmx3T7/pub?output=csv"
 src_comunicatastaliamministrativi = "comuni_catastali_amministrativi_trentino.csv"
 src_comunicatastaliamministrativi = "code" + os.sep + "comuni_catastali_amministrativi_trentino.csv"
